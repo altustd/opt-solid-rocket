@@ -1,5 +1,8 @@
 # Solid Rocket Motor Design Optimization
 
+This book assumes basic familiarity with solid rocket motor internal ballistics. For a detailed treatment of the underlying theory, equations, and simulation methods, please refer to the companion repository:
+Solid Rocket Internal Ballistics
+
 **A Multidisciplinary Design Optimization (MDO) framework for solid rocket motors using Python and Quarto.**
 
 This project develops a system-level optimization approach for solid rocket motor (SRM) design. It treats the SRM as a true **Multidisciplinary Design Optimization (MDO)** problem, where multiple subsystems are modeled and optimized together rather than in isolation.

@@ -3,38 +3,52 @@ project:
   output-dir: _book
 
 book:
-  title: "Multidisciplinary Optimization of Solid Rocket Motors"
-  subtitle: "Theory, Methods, and Python Implementations"
+  title: "Solid Rocket Motor Design Optimization"
+  subtitle: "A Multidisciplinary Design Optimization (MDO) Approach"
   author: "Troy Altus"
-  date: "March 2026"
-  description: "A practical guide combining theory, disciplinary models, and ready-to-run Python code for SRM MDO."
-  
+  date: today
+  repo-url: https://github.com/altustd/opt-solid-rocket
+  repo-actions: [edit, issue]
+
   chapters:
     - index.qmd
-    - chapters/01-introduction.qmd
-    - chapters/02-srm-fundamentals.qmd
-    - chapters/03-propulsion-ballistics.qmd
+    - part: "Fundamentals"
+      chapters:
+        - chapters/01-fundamentals.qmd
+        - chapters/02-grain-design.qmd
+        - chapters/03-internal-ballistics.qmd
+    - part: "Subsystem Design"
+      chapters:
+        - chapters/04-nozzle-design.qmd
+        - chapters/05-structural-analysis.qmd
+        - chapters/06-ignition-transient.qmd
+    - part: "Multidisciplinary Optimization"
+      chapters:
+        - chapters/07-mdo-framework.qmd
+        - chapters/08-single-objective-opt.qmd
+        - chapters/09-multi-objective-opt.qmd
+        - chapters/10-case-studies.qmd
+
+  appendices:
+    - appendices/a-derivations.qmd
+    - appendices/b-propellant-database.qmd
+    - appendices/c-python-modules.qmd
+    - appendices/d-optimization-comparison.qmd
+    - appendices/e-glossary.qmd
 
 format:
   html:
     theme: cosmo
+    css: styles.css           # ← This line was missing in the previous version
+    number-sections: true
     toc: true
     toc-depth: 3
-    code-fold: show
-    code-tools: true
-    fig-width: 8
-    fig-height: 5
     smooth-scroll: true
-    # embed-resources: true     # ← Commented out to reduce preview warnings
-    pyodide: true
-
   pdf:
-    documentclass: scrbook
-    toc: true
+    documentclass: scrreprt
     number-sections: true
+    toc: true
+    toc-depth: 3
 
-execute:
-  cache: true
-  freeze: auto
-  warning: false
-  message: false
+crossref:
+  chapters: true

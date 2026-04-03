@@ -16,3 +16,6 @@ env/
 
 # Local config
 _quarto.yml.local
+
+/.quarto/
+**/*.quarto_ipynb

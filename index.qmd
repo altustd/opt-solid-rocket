@@ -5,7 +5,7 @@ author: "Troy Altus"
 date: "March 2026"
 ---
 
-# Welcome
+# Welcome {.unnumbered}
 
 This book provides a rigorous, hands-on guide to **multidisciplinary design optimization (MDO)** of solid rocket motors.
 
