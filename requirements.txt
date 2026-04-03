@@ -1,0 +1,12 @@
+numpy
+scipy
+matplotlib
+pandas
+plotly
+jupyter
+ipywidgets
+quarto
+sympy
+tqdm
+seaborn
+openmdao
