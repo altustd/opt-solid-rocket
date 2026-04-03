@@ -1,0 +1,41 @@
+## Propellant Chemistry and Burn-Rate Laws
+
+Solid propellants are typically classified as **double-base** or **composite**. The burning behavior is described by empirical laws that relate the linear burn rate \( r \) to chamber pressure \( p_c \).
+
+### Vieille’s Law (Saint-Robert’s Law)
+
+The most common model is:
+
+$$
+r = a \, p_c^n
+$$
+
+where:
+- \( r \) = linear burn rate (m/s)
+- \( a \) = burn rate coefficient (units depend on pressure units)
+- \( n \) = burn rate pressure exponent (dimensionless, typically 0.2–0.7)
+- \( p_c \) = chamber pressure (Pa or psi)
+
+```{python}
+#| label: burn-rate-law
+#| echo: true
+#| fig-cap: "Burn rate vs. chamber pressure for different values of n (a = 0.005 m/s·Pa⁻ⁿ)"
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+def burn_rate(p, a=0.005, n=0.4):
+    """Vieille’s Law - burn rate in m/s (SI units)"""
+    return a * p**n
+
+p = np.linspace(1e6, 10e6, 200)  # 1 to 10 MPa
+
+plt.plot(p/1e6, burn_rate(p, n=0.3)*1000, label='n = 0.3')
+plt.plot(p/1e6, burn_rate(p, n=0.4)*1000, label='n = 0.4 (typical)')
+plt.plot(p/1e6, burn_rate(p, n=0.6)*1000, label='n = 0.6')
+plt.xlabel('Chamber Pressure (MPa)')
+plt.ylabel('Burn Rate (mm/s)')
+plt.title('Effect of Pressure Exponent on Burn Rate')
+plt.legend()
+plt.grid(True)
+plt.show()

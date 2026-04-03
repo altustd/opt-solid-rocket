@@ -1,0 +1,92 @@
+---
+title: "Solid Rocket Motor Trade Study"
+author: "Troy Altus"
+date: last-modified 3/23/2026
+format:
+  html:
+    theme: cosmo              # or minty, flatly, etc.
+    toc: true
+    toc-depth: 3
+    code-fold: show           # or true = start folded
+    fig-width: 8
+    fig-height: 5
+execute:
+  cache: true
+  freeze: auto              # keeps outputs between quarto versions
+---
+
+# Introduction
+
+This document explores SRM design trade-offs using simple 0D ballistics.
+
+We use the following **assumptions**:
+
+- Propellant density = 1750 kg/m³
+- Characteristic velocity $c^*$ = 1550 m/s
+
+## 1. Ballistics Model
+
+```{python}
+#| label: model-definition
+#| echo: true
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+def simple_thrust(Dc, Lc, web):
+    # very simplified model
+    At = np.pi * (0.075/2)**2
+    Vc = np.pi * (Dc/2)**2 * Lc
+    m_prop = Vc * 1750 * 0.88
+    # ... rest of your model ...
+    return {"I_tot": 42000, "P_max": 6.2}
+``` 
+
+
+#| label: sweep
+#| fig-cap: "Impulse vs chamber length for different diameters"
+
+diameters = [0.20, 0.24, 0.28]
+lengths   = np.linspace(0.9, 2.2, 12)
+
+results = []
+for D in diameters:
+    for L in lengths:
+        res = simple_thrust(D, L, web=0.08)
+        results.append({"D": D, "L": L, **res})
+
+import pandas as pd
+df = pd.DataFrame(results)
+
+plt.plot(df["L"], df["I_tot"], "o-")
+plt.xlabel("Chamber length (m)")
+plt.ylabel("Total impulse (N·s)")
+plt.grid(True)
+plt.show()
+
+
+### How to create & edit `.qmd` files comfortably
+
+| Editor              | Experience level like Jupyter | Recommendation |
+|---------------------|-------------------------------|----------------|
+| **JupyterLab**      | Almost identical              | Use + `quarto preview file.qmd` in terminal |
+| **VS Code**         | Excellent (best Quarto support) | Install Quarto extension → live preview, cell execution, outline |
+| **Positron / RStudio** | Very good                   | Great if you sometimes use R |
+| **Cursor / plain text** | Good                        | Fast & lightweight |
+
+### Quick mapping: Jupyter → Quarto
+
+| Jupyter concept            | Quarto equivalent (in `.qmd`)                         | Notes |
+|----------------------------|--------------------------------------------------------|-------|
+| Markdown cell              | Just write markdown                                    | Same syntax |
+| Code cell                  | ````{python} ... ```                                   | Language can be python, r, julia, etc. |
+| Cell options               | `#|` comments at top of cell                           | `#| echo: false`, `#| label: myfig`, etc. |
+| Hide all code              | `execute: echo: false` in YAML header                  | Or per cell |
+| Figure caption             | `#| fig-cap: "My nice plot"`                           | Auto cross-ref with `@fig-myfig` |
+| Table of contents          | `toc: true` in YAML                                    | Very clean |
+| Parameters                 | `params:` section in YAML                              | `quarto render -P param: value` |
+| Caching                    | `cache: true` or `freeze: auto`                        | Huge time saver |
+
+Start small: create one `.qmd` file with 2–3 sections, a plot and a table — render it — and you'll see how close (and often nicer) it feels compared to exporting notebooks.
+
+Let me know if you'd like a starter template file for your SRM work, or help converting an existing `.ipynb` → `.qmd`, or setting up VS Code / JupyterLab for Quarto!

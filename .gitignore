@@ -1,0 +1,18 @@
+# Quarto output
+_book/
+.quarto/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+env/
+
+# OS
+.DS_Store
+
+# Local config
+_quarto.yml.local

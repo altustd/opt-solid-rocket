@@ -1,0 +1,40 @@
+project:
+  type: book
+  output-dir: _book
+
+book:
+  title: "Multidisciplinary Optimization of Solid Rocket Motors"
+  subtitle: "Theory, Methods, and Python Implementations"
+  author: "Troy Altus"
+  date: "March 2026"
+  description: "A practical guide combining theory, disciplinary models, and ready-to-run Python code for SRM MDO."
+  
+  chapters:
+    - index.qmd
+    - chapters/01-introduction.qmd
+    - chapters/02-srm-fundamentals.qmd
+    - chapters/03-propulsion-ballistics.qmd
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    code-fold: show
+    code-tools: true
+    fig-width: 8
+    fig-height: 5
+    smooth-scroll: true
+    # embed-resources: true     # ← Commented out to reduce preview warnings
+    pyodide: true
+
+  pdf:
+    documentclass: scrbook
+    toc: true
+    number-sections: true
+
+execute:
+  cache: true
+  freeze: auto
+  warning: false
+  message: false

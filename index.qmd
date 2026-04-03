@@ -1,0 +1,16 @@
+---
+title: "Multidisciplinary Optimization of Solid Rocket Motors"
+subtitle: "Theory, Methods, and Python Implementations"
+author: "Troy Altus"
+date: "March 2026"
+---
+
+# Welcome
+
+This book provides a rigorous, hands-on guide to **multidisciplinary design optimization (MDO)** of solid rocket motors.
+
+It combines theory, disciplinary models (ballistics, structures, thermal, trajectory), and ready-to-run Python code.
+
+Start with **Chapter 1** or jump to any section using the sidebar.
+
+Happy optimizing! 🚀

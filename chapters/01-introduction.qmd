@@ -1,0 +1,29 @@
+---
+title: "Chapter 1: Introduction to Solid Rocket Motors and MDO"
+author: "Troy Altus"
+date: last-modified
+---
+
+# Introduction to Solid Rocket Motors and MDO
+
+Solid rocket motors (SRMs) power launch vehicles, missiles, and boosters worldwide due to their **simplicity**, **high reliability**, and **excellent thrust-to-weight ratio**.
+
+## Why Multidisciplinary Design Optimization (MDO)?
+
+Designing an SRM is inherently multidisciplinary. Key disciplines interact strongly:
+
+- **Internal ballistics** — pressure-time curve, thrust profile, burn time
+- **Structural analysis** — case burst margin, grain structural integrity under pressure and acceleration
+- **Thermal protection & ablation** — insulator sizing, nozzle throat erosion
+- **Trajectory & vehicle performance** — total impulse, mass fraction, delivered velocity
+- **Manufacturing & cost** — producibility, material usage, complexity
+
+Traditional single-discipline optimization often produces designs that fail when all constraints are considered together. **MDO** provides systematic methods to handle these couplings and find better overall solutions.
+
+This book presents the theory, practical models, coupling strategies, and **executable Python code** (built on NumPy, SciPy, and optionally OpenMDAO) needed to perform full MDO studies on solid rocket motors.
+
+**Book Structure**
+- Chapter 2: SRM Fundamentals and Parametric Modeling
+- Chapter 3: Propulsion and Internal Ballistics
+- Subsequent chapters cover structures, thermal, trajectory, single- and multi-discipline optimization, surrogates, uncertainty, and case studies.
+

@@ -1,0 +1,93 @@
+---
+title: "Chapter 3: Propulsion and Internal Ballistics"
+author: "Troy Altus"
+date: last-modified
+---
+
+# Propulsion and Internal Ballistics
+
+This chapter dives deeper into the propulsion aspects of solid rocket motors, focusing on internal ballistics modeling, thrust prediction, and performance metrics.
+
+## Key Performance Metrics
+
+- **Total Impulse** ($$   I_{tot}   $$): $$   \int F(t) \, dt   $$
+- **Specific Impulse** ($$   I_{sp}   $$): $$   I_{tot} / (g_0 \cdot m_{prop})   $$
+- **Thrust Coefficient** ($$   C_F   $$)
+- **Characteristic Velocity** ($$   c^*   $$)
+- **Mass Flow Rate** and **Pressure-Time Curve**
+
+## 0D Internal Ballistics Model
+
+The simplified zero-dimensional model couples propellant mass generation with nozzle outflow.
+
+```{python}
+#| label: ballistic-ode
+#| echo: true
+#| fig-cap: "Chamber pressure and thrust time histories for a neutral-burning grain"
+
+import numpy as np
+from scipy.integrate import solve_ivp
+import matplotlib.pyplot as plt
+
+def burn_rate(p, a=0.005, n=0.40):
+    """Vieille’s Law: r = a * p^n (SI units: m/s, Pa)"""
+    return a * p**n
+
+def srm_ballistics(t, y, A_b_func, V_c, A_t, rho_p=1750.0, c_star=1550.0, gamma=1.25):
+    """0D Internal Ballistics ODE"""
+    p, m_prop = y
+    r = burn_rate(p)
+    
+    # Burning surface area (can be constant or time-dependent)
+    A_b = A_b_func(t) if callable(A_b_func) else A_b_func
+    
+    dm_dt = rho_p * A_b * r                    # Propellant mass generation rate (kg/s)
+    
+    # Nozzle mass outflow (simplified isentropic)
+    dp_dt = (dm_dt * c_star**2 / V_c) - (p * A_t * np.sqrt(gamma * 287 * 3000) / V_c)
+    
+    return [dp_dt, -dm_dt]
+
+# Example: Neutral burning (constant burning surface area)
+def neutral_burn_area(t):
+    return 0.28  # m² - constant for neutral grain
+
+# Simulation parameters
+V_c = 0.12      # Chamber volume (m³)
+A_t = 0.015     # Nozzle throat area (m²)
+m_prop_initial = 180.0
+
+sol = solve_ivp(
+    srm_ballistics, 
+    t_span=[0, 12], 
+    y0=[2e6, m_prop_initial], 
+    args=(neutral_burn_area, V_c, A_t),
+    method='RK45',
+    dense_output=True,
+    rtol=1e-6
+)
+
+t = np.linspace(0, 12, 600)
+p = sol.sol(t)[0] / 1e6          # Pressure in MPa
+thrust = p * 1e6 * A_t * 1.55    # Approximate thrust (C_F ≈ 1.55)
+
+fig, ax1 = plt.subplots(figsize=(10, 6))
+
+ax1.plot(t, p, 'b-', label='Chamber Pressure')
+ax1.set_xlabel('Time (s)')
+ax1.set_ylabel('Pressure (MPa)', color='b')
+ax1.tick_params(axis='y', labelcolor='b')
+ax1.grid(True)
+
+ax2 = ax1.twinx()
+ax2.plot(t, thrust/1000, 'r-', label='Thrust')
+ax2.set_ylabel('Thrust (kN)', color='r')
+ax2.tick_params(axis='y', labelcolor='r')
+
+plt.title('Pressure and Thrust Time History - Neutral Burning Grain')
+fig.tight_layout()
+plt.show()
+
+print(f"Maximum Pressure: {p.max():.2f} MPa")
+print(f"Maximum Thrust: {thrust.max()/1000:.1f} kN")
+print(f"Burn Time: {t[-1]:.2f} s")
